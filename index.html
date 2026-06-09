@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Love Letter Envelope</title>
+  <title>for my baby</title>
   <style>
     :root {
       --bg-top: #ffe7d9;
@@ -41,6 +41,12 @@
       padding: 32px 0;
     }
 
+    .letter-toggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .envelope {
       width: 340px;
       height: 220px;
@@ -48,6 +54,7 @@
       filter: drop-shadow(0 22px 25px rgba(91, 58, 51, 0.22));
       transform-style: preserve-3d;
       animation: floatEnvelope 4s ease-in-out infinite;
+      cursor: pointer;
     }
 
     .back,
@@ -175,27 +182,24 @@
       letter-spacing: 0.02em;
     }
 
-    .scene:hover .flap {
+    .letter-toggle:checked + .envelope .flap {
       transform: rotateX(180deg);
       
     }
 
-    .scene:hover .front,
-    .scene:hover .flap,
-    .scene:hover .seal {
+    .letter-toggle:checked + .envelope .front,
+    .letter-toggle:checked + .envelope .flap,
+    .letter-toggle:checked + .envelope .seal {
       pointer-events: none;
     }
 
-    .scene:hover .seal {
+    .letter-toggle:checked + .envelope .seal {
       transform: rotateX(180deg) translateY(200px) translateX(-27px) scale(1);
       animation: sealZIndexDelay 0s linear 0.2s forwards;
     }
-    .scene:hover .letter {
-      transform: translateY(-100px) scale(1);
-      opacity: 0;
-    }
 
-    .scene:hover .letter:hover {
+    .letter-toggle:checked + .envelope .letter {
+      transform: translateY(-100px) scale(1);
       opacity: 1;
     }
     @keyframes floatEnvelope {
@@ -226,7 +230,8 @@
 </head>
 <body>
   <div class="scene" aria-label="Envelope with love letter">
-    <div class="envelope">
+    <input type="checkbox" id="letter-toggle" class="letter-toggle" />
+    <label class="envelope" for="letter-toggle">
       <div class="back"></div>
       <div class="letter">
         <h1>My Love,</h1>
@@ -240,8 +245,8 @@
       <div class="front"></div>
       <div class="flap"></div>
       <div class="seal">❤</div>
-    </div>
-    <p class="hint">Hover over the envelope to reveal the letter.</p>
+    </label>
+    <p class="hint">Tap or click the envelope to open and close the letter.</p>
   </div>
 </body>
 </html>
