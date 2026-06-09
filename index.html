@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Letter Envelope</title>
+  <style>
+    :root {
+      --bg-top: #ffe7d9;
+      --bg-bottom: #ffd6e7;
+      --envelope-main: #f2c6b4;
+      --envelope-shadow: #d7a38f;
+      --flap: #e8b4a1;
+      --letter: #fffdf7;
+      --ink: #5b3a33;
+      --heart: #d64566;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 15%, #fff4ec 0%, transparent 40%),
+                  radial-gradient(circle at 80% 85%, #ffd9ea 0%, transparent 38%),
+                  linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+      overflow: hidden;
+    }
+
+    .scene {
+      width: min(92vw, 520px);
+      perspective: 1200px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 32px 0;
+    }
+
+    .envelope {
+      width: 340px;
+      height: 220px;
+      position: relative;
+      filter: drop-shadow(0 22px 25px rgba(91, 58, 51, 0.22));
+      transform-style: preserve-3d;
+      animation: floatEnvelope 4s ease-in-out infinite;
+    }
+
+    .back,
+    .front,
+    .flap,
+    .letter {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .back {
+      bottom: 0;
+      height: 100%;
+      background: var(--envelope-main);
+      overflow: hidden;
+    }
+
+    .back::before,
+    .back::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--envelope-shadow);
+      clip-path: polygon(0 100%, 100% 100%, 100% 0);
+      opacity: 0.25;
+    }
+
+    .back::after {
+      right: 0;
+      transform: scaleX(-1);
+    }
+
+    .flap {
+      top: 0;
+      height: 100%;
+      background: var(--flap);
+      transform-origin: top center;
+      clip-path: polygon(0 0, 50% 57%, 100% 0);
+      z-index: 1;
+      transition: transform 0.8s ease;
+    }
+    .seal {
+      top: 0;
+      height: 100%;
+      transform-origin: top center;
+      z-index: 1;
+      transition: transform 0.8s ease;
+    }
+
+    .letter {
+      bottom: 14px;
+      width: calc(100% - 36px);
+      left: 18px;
+      height: 178*2px;
+      background: var(--letter);
+      color: var(--ink);
+      padding: 16px 18px;
+      z-index: 3;
+      border: 1px solid #f2e7db;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+      transform-origin: center bottom;
+      transform: translateY(88px);
+      opacity: 0;
+      transition: transform 0.9s ease, opacity 0.9s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .letter h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--heart);
+      letter-spacing: 0.03em;
+    }
+
+    .letter p {
+      margin: 0;
+      line-height: 1.35;
+      font-size: 0.95rem;
+    }
+
+    .signature {
+      margin-top: 4px;
+      font-style: italic;
+      color: #8e4f63;
+    }
+
+    .front {
+      bottom: 0;
+      height: 100%;
+      background: var(--envelope-main);
+      clip-path: polygon(0 100%, 0 43%, 50% 73%, 100% 43%, 100% 100%);
+      z-index: 5;
+    }
+
+    .seal {
+      position: absolute;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #f8d4d0;
+      border: 2px solid #e9a09d;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -10%);
+      z-index: 7;
+      display: grid;
+      place-items: center;
+      color: var(--heart);
+      font-size: 1.2rem;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .hint {
+      margin-top: 22px;
+      color: #7a5050;
+      font-size: 0.9rem;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .scene:hover .flap {
+      transform: rotateX(180deg);
+      
+    }
+
+    .scene:hover .front,
+    .scene:hover .flap,
+    .scene:hover .seal {
+      pointer-events: none;
+    }
+
+    .scene:hover .seal {
+      transform: rotateX(180deg) translateY(200px) translateX(-27px) scale(1);
+      animation: sealZIndexDelay 0s linear 0.2s forwards;
+    }
+    .scene:hover .letter {
+      transform: translateY(-100px) scale(1);
+      opacity: 0;
+    }
+
+    .scene:hover .letter:hover {
+      opacity: 1;
+    }
+    @keyframes floatEnvelope {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes sealZIndexDelay {
+      to {
+        z-index: 0;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .envelope {
+        transform: scale(0.1);
+      }
+
+      .hint {
+        padding: 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-label="Envelope with love letter">
+    <div class="envelope">
+      <div class="back"></div>
+      <div class="letter">
+        <h1>My Love,</h1>
+        <p>I appreciate the short time we've spent together,</p>
+        <p>I love you for being someone I can always talk to</p>
+        <p>thank you for choosing me for who I am, and who I'll turn to be</p>
+        <p>Thank you for being one of the strongest people I know</p>
+        <p class="signature">Forever yours your sealion,</p>
+        <p class="signature">Tristan</p>
+      </div>
+      <div class="front"></div>
+      <div class="flap"></div>
+      <div class="seal">❤</div>
+    </div>
+    <p class="hint">Hover over the envelope to reveal the letter.</p>
+  </div>
+</body>
+</html>
